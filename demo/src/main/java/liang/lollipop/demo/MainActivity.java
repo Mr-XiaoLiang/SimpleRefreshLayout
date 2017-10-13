@@ -1,5 +1,6 @@
 package liang.lollipop.demo;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -30,7 +31,13 @@ public class MainActivity extends AppCompatActivity implements SimpleRefreshLayo
                         .setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
                 break;
             case STYLE_SimplePull:
-                simpleRefreshLayout.setRefreshView(new SimplePullModel(this));
+                simpleRefreshLayout
+                        .setRefreshView(new SimplePullModel(this))
+                        .setPullDownHint("下拉进行刷新")
+                        .setPullReleaseHint("松手开始刷新")
+                        .setRefreshingHint("正在进行刷新")
+                        .setHintColor(Color.GRAY)
+                        .setProgressColors(Color.GRAY,Color.TRANSPARENT);
                 break;
         }
     }
