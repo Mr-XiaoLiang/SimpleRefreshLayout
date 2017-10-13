@@ -1,6 +1,5 @@
 package liang.lollipop.simplerefreshlayout;
 
-import android.animation.Animator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.support.annotation.IntDef;
@@ -570,7 +569,7 @@ public class SimpleRefreshLayout
         if (mTarget == null) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                if (!child.equals(mRefreshView)) {
+                if (!child.equals(mRefreshView) && !child.getClass().isAssignableFrom(RefreshView.class)) {
                     mTarget = child;
                     break;
                 }
