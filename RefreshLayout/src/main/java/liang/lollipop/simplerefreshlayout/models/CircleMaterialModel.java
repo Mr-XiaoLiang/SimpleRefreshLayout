@@ -332,7 +332,7 @@ public class CircleMaterialModel extends SimpleRefreshLayout.RefreshView {
         int targetTop = (mFrom + (int) ((mOriginalOffsetTop - mFrom) * interpolatedTime));
         int offset = targetTop - mCircleView.getTop();
         setTargetOffsetTopAndBottom(offset, false /* requires update */);
-        targetScrollTo(mCircleView.getTop()+mCircleDiameter);
+//        targetScrollTo(mCircleView.getTop()+mCircleDiameter);
     }
 
     private void startProgressAlphaStartAnimation() {
