@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:minHeight="80dp">
+    <View android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:id="@+id/head_simple_pull_pro"/>
+    <Space
+        android:layout_width="20dp"
+        android:layout_height="wrap_content" />
+    <TextView
+        android:id="@+id/head_simple_pull_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#333"
+        android:textSize="16sp"/>
+</LinearLayout>

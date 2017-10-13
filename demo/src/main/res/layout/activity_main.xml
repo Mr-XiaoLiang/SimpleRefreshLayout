@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:layout_height="match_parent" tools:context="liang.lollipop.demo.MainActivity">
+
+    <liang.lollipop.simplerefreshlayout.SimpleRefreshLayout
+        android:id="@+id/simpleRefreshLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#f00"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#7bff00"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#ffcc00"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#002aff"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#bb00ff"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#00ffff"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#aaff00"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#0077ff"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#b3ff00"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#ff0084"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#9d00ff"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:background="#00ffaa"/>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </liang.lollipop.simplerefreshlayout.SimpleRefreshLayout>
+
+</android.support.design.widget.CoordinatorLayout>
