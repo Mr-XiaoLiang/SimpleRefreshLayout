@@ -124,6 +124,12 @@ public class FanLoaderDrawable extends Drawable {
         invalidateSelf();
     }
 
+    public void setPetalSize(int petalSize) {
+        this.petalSize = petalSize;
+        init();
+        invalidateSelf();
+    }
+
     public void setPetalHeightPercent(float petalHeightPercent) {
         this.petalHeightPercent = petalHeightPercent;
         init();

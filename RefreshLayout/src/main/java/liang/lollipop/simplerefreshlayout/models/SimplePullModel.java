@@ -2,7 +2,10 @@ package liang.lollipop.simplerefreshlayout.models;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.graphics.ColorFilter;
 import android.os.Build;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -35,11 +38,11 @@ public class SimplePullModel extends SimpleRefreshLayout.RefreshView{
     //旋转动画的动画本身
     private Animation rotatingAnimation;
     //下拉的提示语
-    private String pullDownHint = "下拉进行刷新";
+    private CharSequence pullDownHint = "下拉进行刷新";
     //提示松手的描述
-    private String pullReleaseHint = "松手开始刷新";
+    private CharSequence pullReleaseHint = "松手开始刷新";
     //刷新过程中的描述语
-    private String refreshingHint = "正在刷新";
+    private CharSequence refreshingHint = "正在刷新";
     //触发刷新的百分比
     private float triggerPercent = 0.8f;
     //当前的刷新状态
@@ -254,7 +257,7 @@ public class SimplePullModel extends SimpleRefreshLayout.RefreshView{
      * @param pullPixels 下拉的实际距离
      * @param totalDragDistance 设定的触发刷新距离
      * @param originalDragPercent 下拉距离与目标距离间的百分比
-     * @return
+     * @return 返回内容体的Y坐标
      * 此处本方法意义不大，因为位置移动已经被重写
      */
     @Override
@@ -267,7 +270,7 @@ public class SimplePullModel extends SimpleRefreshLayout.RefreshView{
      * @param pullPixels 下拉的实际距离
      * @param totalDragDistance 设定的触发刷新距离
      * @param originalDragPercent 下拉距离与目标距离间的百分比
-     * @return
+     * @return 返回内容体的Y坐标
      */
     @Override
     protected float targetViewFinishOffset(float pullPixels, float totalDragDistance, float originalDragPercent) {
@@ -298,4 +301,65 @@ public class SimplePullModel extends SimpleRefreshLayout.RefreshView{
     protected boolean canRefresh(float pullPixels, float totalDragDistance, float originalDragPercent) {
         return originalDragPercent>triggerPercent;
     }
+
+    public SimplePullModel setMoveToTopAnimationDuration(long moveToTopAnimationDuration) {
+        this.moveToTopAnimationDuration = moveToTopAnimationDuration;
+        return this;
+    }
+
+    public SimplePullModel setMoveToTargetAnimationDuration(long moveToTargetAnimationDuration) {
+        this.moveToTargetAnimationDuration = moveToTargetAnimationDuration;
+        return this;
+    }
+
+    public SimplePullModel setPullDownHint(CharSequence pullDownHint) {
+        this.pullDownHint = pullDownHint;
+        return this;
+    }
+
+    public SimplePullModel setPullReleaseHint(CharSequence pullReleaseHint) {
+        this.pullReleaseHint = pullReleaseHint;
+        return this;
+    }
+
+    public SimplePullModel setRefreshingHint(CharSequence refreshingHint) {
+        this.refreshingHint = refreshingHint;
+        return this;
+    }
+
+    public SimplePullModel setHintColor(int color){
+        hintView.setTextColor(color);
+        return this;
+    }
+
+    public SimplePullModel setProgressColors(int... colors){
+        progressDrawable.setColors(colors);
+        return this;
+    }
+
+    public SimplePullModel setProgressAlpha(@IntRange(from = 0, to = 255)int alpha){
+        progressDrawable.setAlpha(alpha);
+        return this;
+    }
+
+    public SimplePullModel setProgressColorFilter(@Nullable ColorFilter colorFilter) {
+        progressDrawable.setColorFilter(colorFilter);
+        return this;
+    }
+
+    public SimplePullModel setPetalSize(int petalSize) {
+        progressDrawable.setPetalSize(petalSize);
+        return this;
+    }
+
+    public SimplePullModel setPetalHeightPercent(float petalHeightPercent) {
+        progressDrawable.setPetalHeightPercent(petalHeightPercent);
+        return this;
+    }
+
+    public SimplePullModel setPetalWidthPercent(float petalWidthPercent) {
+        progressDrawable.setPetalWidthPercent(petalWidthPercent);
+        return this;
+    }
+
 }

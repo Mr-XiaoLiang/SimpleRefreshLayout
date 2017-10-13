@@ -541,15 +541,22 @@ public class SimpleRefreshLayout
     public <T extends RefreshView> T setRefreshView(T view) {
         //如果已经存在刷新头
         if(mRefreshView!=null){
-            //那么去掉刷新控件的引用
+            //那么去掉历史控件的刷新接口引用
             mRefreshView.refreshListener = null;
+            //去除历史控件的Body控制引用
             mRefreshView.targetViewScroll = null;
+            //移除刷新控件
             removeView(mRefreshView);
         }
+        //保存新控件引用
         mRefreshView = view;
+        //关联刷新接口引用
         mRefreshView.refreshListener = mListener;
+        //关联Body控制引用
         mRefreshView.targetViewScroll = this;
+        //添加到Layout中
         addView(mRefreshView);
+        //返回控件，以方便参数设置
         return view;
     }
 
@@ -682,7 +689,6 @@ public class SimpleRefreshLayout
         protected OnRefreshListener refreshListener;
         protected boolean mRefreshing = false;
         protected ScrollCallBack targetViewScroll;
-        protected boolean autoLockView = true;
 
         protected ValueAnimator targetViewAnimator;
 
@@ -876,10 +882,6 @@ public class SimpleRefreshLayout
                 callOnRefresh();
             }
             mRefreshing = refreshing;
-        }
-
-        protected void setAutoLockView(boolean autoLockView) {
-            this.autoLockView = autoLockView;
         }
 
         /**
