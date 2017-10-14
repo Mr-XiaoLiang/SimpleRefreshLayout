@@ -864,7 +864,7 @@ public class SimpleRefreshLayout
         protected abstract void onPullToRefresh(float pullPixels,float totalDragDistance,float originalDragPercent);
 
         /**
-         * 此方法将在结束下拉之后触发，实现或者重写次方法，
+         * 此方法将在结束下拉之后触发，实现或者重写此方法，
          * 将可以在松手后将View复位或者进行其他相关设置
          * @param pullPixels 下拉的实际距离
          * @param totalDragDistance 设定的触发刷新距离
@@ -925,7 +925,12 @@ public class SimpleRefreshLayout
         }
     }
 
-    public void setMoreListener(RecyclerView recyclerView,OnScrollDownListener.OnScrollListener onScrollListener){
+    public void setMoreListener(OnScrollDownListener.OnScrollListener onScrollListener){
+        RecyclerView recyclerView;
+        if(mTarget instanceof RefreshView)
+            recyclerView = (RecyclerView) mTarget;
+        else
+            throw new RuntimeException(getClass().getSimpleName()+" 目前仅支持RecyclerView的上拉加载更多功能");
         recyclerView.addOnScrollListener(
                 new OnScrollDownListener(
                         (LinearLayoutManager) recyclerView.getLayoutManager(),

@@ -3,7 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/RefreshLayout/RefreshLayout.iml" filepath="$PROJECT_DIR$/RefreshLayout/RefreshLayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/RefreshLayout/RefreshLayout.iml" filepath="$PROJECT_DIR$/RefreshLayout/RefreshLayout.iml" />
       <module fileurl="file://$PROJECT_DIR$/SimpleRefreshLayout.iml" filepath="$PROJECT_DIR$/SimpleRefreshLayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SimpleRefreshLayout.iml" filepath="$PROJECT_DIR$/SimpleRefreshLayout.iml" />
+      <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/demo/demo.iml" filepath="$PROJECT_DIR$/demo/demo.iml" />
     </modules>
   </component>
