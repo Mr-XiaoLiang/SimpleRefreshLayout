@@ -19,7 +19,7 @@
 使用方法：
 > ``` Java
 > simpleRefreshLayout
->     .setRefreshView(RefreshView view) //设置刷新头
+>     .setRefreshView(BaseRefreshView view) //设置刷新头
 >     .xxxx //设置刷新头的相关属性
 > ```
 > 以下为使用默认的简单刷新头实现：
@@ -32,12 +32,12 @@
 >     .setHintColor(Color.GRAY)//设置刷新提示的文字颜色
 >     .setProgressColors(Color.GRAY,Color.TRANSPARENT);//设置刷新进度条的颜色（数组）
 > ```
-> 注意，除了_setRefreshView(RefreshView view)_ 方法，其他方法均由刷新头提供，因此，更换刷新头，将会有不同的参数设置项以及刷新效果。
+> 注意，除了_setRefreshView(BaseRefreshView view)_ 方法，其他方法均由刷新头提供，因此，更换刷新头，将会有不同的参数设置项以及刷新效果。
 
 代码介绍：
-> _setRefreshView(RefreshView view)_ 这是SimpleRefreshLayout对外最主要的方法，此方法用于初始化SimpleRefreshLayout，同时做到了更换刷新样式而不需要修改布局文件以及其他代码的目的。__此方法请在界面测量前调用并完成初始化。__建议封装为公用的方法，当业务需求变化时，可以一处修改，所有界面的刷新样式全部改变。
+> _setRefreshView(BaseRefreshView view)_ 这是SimpleRefreshLayout对外最主要的方法，此方法用于初始化SimpleRefreshLayout，同时做到了更换刷新样式而不需要修改布局文件以及其他代码的目的。__此方法请在界面测量前调用并完成初始化。__建议封装为公用的方法，当业务需求变化时，可以一处修改，所有界面的刷新样式全部改变。
 > ``` Java
->     public <T extends RefreshView> T setRefreshView(T view) {
+>     public <T extends BaseRefreshView> T setRefreshView(T view) {
 >        //如果已经存在刷新头
 >        if(mRefreshView!=null){
 >            //那么去掉历史控件的刷新接口引用
@@ -61,7 +61,7 @@
 > ```
 
 自定义刷新头：
-> 1. 继承SimpleRefreshLayout.RefreshView
+> 1. 继承SimpleRefreshLayout.BaseRefreshView
 > 2. 实现抽象方法，必要时可以重写相关方法
 > ``` Java
 >         /**

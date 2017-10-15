@@ -63,7 +63,7 @@ public class SimpleRefreshLayout
      * the target of the gesture
      */
     private View mTarget;
-    private BaseRefreshView mBaseRefreshView;
+    private BaseRefreshView mRefreshView;
     private int mRefreshViewIndex = -1;
 
     private int mActivePointerId = INVALID_POINTER;
@@ -118,7 +118,7 @@ public class SimpleRefreshLayout
     }
 
     void reset() {
-        mBaseRefreshView.reset();
+        mRefreshView.reset();
     }
 
     @Override
@@ -139,7 +139,7 @@ public class SimpleRefreshLayout
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        return isEnabled() && !mReturningToStart && !mBaseRefreshView.isRefreshing()
+        return isEnabled() && !mReturningToStart && !mRefreshView.isRefreshing()
                 && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
@@ -285,21 +285,21 @@ public class SimpleRefreshLayout
     }
 
     private void pullRefresh(float overscrollTop){
-        mBaseRefreshView.pullRefresh(overscrollTop);
+        mRefreshView.pullRefresh(overscrollTop);
     }
 
     private void finishPull(float overscrollTop){
-        if(mBaseRefreshView.finishPull(overscrollTop)&&mListener!=null){
+        if(mRefreshView.finishPull(overscrollTop)&&mListener!=null){
             mListener.onRefresh();
         }
     }
 
     public void setRefreshing(boolean refreshing){
-        mBaseRefreshView.setRefreshing(refreshing);
+        mRefreshView.setRefreshing(refreshing);
     }
 
     public boolean isRefreshing(){
-        return mBaseRefreshView.isRefreshing();
+        return mRefreshView.isRefreshing();
     }
 
     @Override
@@ -315,14 +315,14 @@ public class SimpleRefreshLayout
         }
 
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
-                || mBaseRefreshView.isRefreshing() || mNestedScrollInProgress) {
+                || mRefreshView.isRefreshing() || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mBaseRefreshView.reset();
+                mRefreshView.reset();
                 mActivePointerId = ev.getPointerId(0);
                 mIsBeingDragged = false;
 
@@ -405,7 +405,7 @@ public class SimpleRefreshLayout
         }
 
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
-                || mBaseRefreshView.isRefreshing() || mNestedScrollInProgress) {
+                || mRefreshView.isRefreshing() || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
@@ -494,10 +494,10 @@ public class SimpleRefreshLayout
         if (mTarget == null) {
             return;
         }
-        if(mBaseRefreshView ==null){
+        if(mRefreshView ==null){
             ensureRefreshView();
         }
-        if(mBaseRefreshView ==null){
+        if(mRefreshView ==null){
             throw new RuntimeException("RefreshView is Null");
         }
         final View child = mTarget;
@@ -506,9 +506,9 @@ public class SimpleRefreshLayout
         final int childWidth = width - getPaddingLeft() - getPaddingRight();
         final int childHeight = height - getPaddingTop() - getPaddingBottom();
         child.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
-        int circleWidth = mBaseRefreshView.getMeasuredWidth();
-        int circleHeight = mBaseRefreshView.getMeasuredHeight();
-        mBaseRefreshView.layout((width / 2 - circleWidth / 2), 0,
+        int circleWidth = mRefreshView.getMeasuredWidth();
+        int circleHeight = mRefreshView.getMeasuredHeight();
+        mRefreshView.layout((width / 2 - circleWidth / 2), 0,
                 (width / 2 + circleWidth / 2), circleHeight);
     }
 
@@ -522,23 +522,23 @@ public class SimpleRefreshLayout
             return;
         }
 
-        if(mBaseRefreshView ==null){
+        if(mRefreshView ==null){
             ensureRefreshView();
         }
-        if(mBaseRefreshView ==null){
+        if(mRefreshView ==null){
             throw new RuntimeException("RefreshView is Null");
         }
 
         mTarget.measure(
                 MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
-        mBaseRefreshView.measure(
+        mRefreshView.measure(
                 MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.AT_MOST));
         mRefreshViewIndex = -1;
         // Get the index of the circleview.
         for (int index = 0; index < getChildCount(); index++) {
-            if (getChildAt(index) == mBaseRefreshView) {
+            if (getChildAt(index) == mRefreshView) {
                 mRefreshViewIndex = index;
                 break;
             }
@@ -563,28 +563,28 @@ public class SimpleRefreshLayout
 
     public <T extends BaseRefreshView> T setRefreshView(T view) {
         //如果已经存在刷新头
-        if(mBaseRefreshView !=null){
+        if(mRefreshView !=null){
             //那么去掉历史控件的刷新接口引用
-            mBaseRefreshView.refreshListener = null;
+            mRefreshView.refreshListener = null;
             //去除历史控件的Body控制引用
-            mBaseRefreshView.targetViewScroll = null;
+            mRefreshView.targetViewScroll = null;
             //移除刷新控件
-            removeView(mBaseRefreshView);
+            removeView(mRefreshView);
         }
         //保存新控件引用
-        mBaseRefreshView = view;
+        mRefreshView = view;
         //关联刷新接口引用
-        mBaseRefreshView.refreshListener = mListener;
+        mRefreshView.refreshListener = mListener;
         //关联Body控制引用
-        mBaseRefreshView.targetViewScroll = this;
+        mRefreshView.targetViewScroll = this;
         //添加到Layout中
-        addView(mBaseRefreshView);
+        addView(mRefreshView);
         //返回控件，以方便参数设置
         return view;
     }
 
     public BaseRefreshView getParams(){
-        return mBaseRefreshView;
+        return mRefreshView;
     }
 
     private void ensureTarget() {
@@ -593,7 +593,7 @@ public class SimpleRefreshLayout
         if (mTarget == null) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                if (!child.equals(mBaseRefreshView) && !child.getClass().isAssignableFrom(BaseRefreshView.class)) {
+                if (!child.equals(mRefreshView) && !child.getClass().isAssignableFrom(BaseRefreshView.class)) {
                     mTarget = child;
                     break;
                 }
@@ -604,7 +604,7 @@ public class SimpleRefreshLayout
     private void ensureRefreshView() {
         // Don't bother getting the parent height if the parent hasn't been laid
         // out yet.
-        if (mBaseRefreshView == null) {
+        if (mRefreshView == null) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
                 if (child instanceof BaseRefreshView && !child.equals(mTarget)) {
