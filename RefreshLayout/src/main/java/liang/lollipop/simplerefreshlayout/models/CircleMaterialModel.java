@@ -10,7 +10,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -24,7 +23,7 @@ import liang.lollipop.simplerefreshlayout.models.CircleMaterial.MaterialProgress
  * Created by Lollipop on 2017/10/11.
  * 默认的SwipeRefreshLayout的样式，圆球式的刷新显示
  */
-public class CircleMaterialModel extends SimpleRefreshLayout.RefreshView {
+public class CircleMaterialModel extends SimpleRefreshLayout.BaseRefreshView {
 
     //默认尺寸的加载球
     @VisibleForTesting

@@ -130,8 +130,8 @@ public class MaterialProgressDrawable  extends Drawable implements Animatable {
      * Set the overall size for the progress spinner. This updates the radius
      * and stroke width of the ring.
      *
-     * @param size One of {@link MaterialProgressDrawable.LARGE} or
-     *            {@link MaterialProgressDrawable.DEFAULT}
+     * @param size One of MaterialProgressDrawable.LARGE or
+     *            MaterialProgressDrawable.DEFAULT
      */
     public void updateSizes(@MaterialProgressDrawable.ProgressDrawableSize int size) {
         if (size == LARGE) {
@@ -220,6 +220,7 @@ public class MaterialProgressDrawable  extends Drawable implements Animatable {
         mRing.setAlpha(alpha);
     }
 
+    @Override
     public int getAlpha() {
         return mRing.getAlpha();
     }
@@ -289,7 +290,9 @@ public class MaterialProgressDrawable  extends Drawable implements Animatable {
                 ring.getStrokeWidth() / (2 * Math.PI * ring.getCenterRadius()));
     }
 
-    // Adapted from ArgbEvaluator.java
+    /**
+     * Adapted from ArgbEvaluator.java
+     */
     private int evaluateColorChange(float fraction, int startValue, int endValue) {
         int startInt = (Integer) startValue;
         int startA = (startInt >> 24) & 0xff;

@@ -4,6 +4,7 @@ package liang.lollipop.simplerefreshlayout;
  * Created by Lollipop on 2017/10/11.
  * 这是为下拉头准备的用于关联内容体的回调
  * 辅助调整内容体的位置
+ * @author Lollipop
  */
 public interface ScrollCallBack {
 

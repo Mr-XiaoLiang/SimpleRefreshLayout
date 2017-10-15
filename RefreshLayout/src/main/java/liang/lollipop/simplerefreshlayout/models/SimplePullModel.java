@@ -4,7 +4,6 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.graphics.ColorFilter;
 import android.os.Build;
-import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -22,7 +21,7 @@ import liang.lollipop.simplerefreshlayout.models.SimplePull.FanLoaderDrawable;
  * Created by Lollipop on 2017/10/12.
  * 简单的下拉模式
  */
-public class SimplePullModel extends SimpleRefreshLayout.RefreshView{
+public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
     //旋转动画的动画时间
     private long rotatingAnimationDuration = 1600;
     //收起动画的动画时间

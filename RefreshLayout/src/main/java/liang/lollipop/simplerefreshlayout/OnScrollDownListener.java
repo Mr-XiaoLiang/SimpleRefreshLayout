@@ -6,10 +6,13 @@ import android.support.v7.widget.RecyclerView;
 /**
  * Created by Lollipop on 2016/10/7.
  * RecyclerView的加载更多监听
+ * @author Lollipop
  */
 
 public class OnScrollDownListener extends RecyclerView.OnScrollListener{
-    //用来标记是否正在向最后一个滑动，既是否向下滑动
+    /**
+     * 用来标记是否正在向最后一个滑动，既是否向下滑动
+     */
     private boolean isSlidingToLast = false;
     private LinearLayoutManager manager;
     private int loadSize = 5;
@@ -28,9 +31,8 @@ public class OnScrollDownListener extends RecyclerView.OnScrollListener{
 
     @Override
     public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-//        manager.invalidateSpanAssignments();
-        // 当不滚动时
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
+                // 当不滚动时
                 onScroll.onScroll(true,newState);
             }else{
                 onScroll.onScroll(!isSlidingToLast,newState);
@@ -49,13 +51,14 @@ public class OnScrollDownListener extends RecyclerView.OnScrollListener{
             //加载更多功能的代码
             onScroll.onMore();
         }
-//        OtherUtil.logD("onScrollStateChanged","ItemCount-----------------"+totalItemCount);
     }
+
     private int getMaxElem(int[] arr) {
         int maxVal = Integer.MIN_VALUE;
         for(int a:arr){
-            if(a>maxVal)
+            if(a>maxVal){
                 maxVal = a;
+            }
         }
         return maxVal;
     }

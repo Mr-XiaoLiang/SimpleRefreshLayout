@@ -2,9 +2,9 @@ package liang.lollipop.simplerefreshlayout;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.NestedScrollingChildHelper;
 import android.support.v4.view.NestedScrollingParent;
@@ -23,10 +23,12 @@ import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
 import liang.lollipop.simplerefreshlayout.models.CircleMaterialModel;
+import liang.lollipop.simplerefreshlayout.models.SimplePullModel;
 
 /**
  * Created by lollipop on 2017/10/11.
  * 一个简单的刷新Layout
+ * @author Lollipop
  */
 public class SimpleRefreshLayout
         extends ViewGroup
@@ -34,40 +36,54 @@ public class SimpleRefreshLayout
         NestedScrollingChild,
         ScrollCallBack{
 
-    @IntDef({CircleMaterialModel,SimplePullModel})
+    @IntDef({CIRCLE_MATERIAL_MODEL,SIMPLE_PULL_MODEL})
     public @interface HeadStyleModel {}
 
-    //圆形Material加载头，原生风格
-    public static final int CircleMaterialModel = 0;
-    public static final int SimplePullModel = 1;
+    /**
+     * 圆形Material加载头，原生风格
+     */
+    public static final int CIRCLE_MATERIAL_MODEL = 0;
+
+    /**
+     * 常规简易加载头
+     */
+    public static final int SIMPLE_PULL_MODEL = 1;
 
     private static final String LOG_TAG = SimpleRefreshLayout.class.getSimpleName();
 
-    // Default offset in dips from the top of the view to where the progress spinner should stop
+    /**
+     * Default offset in dips from the top of the view to where the progress spinner should stop
+      */
     private static final int DEFAULT_PULL_TARGET = 64;
 
     private static final int INVALID_POINTER = -1;
 
     private OnChildScrollUpCallback mChildScrollUpCallback;
-    private View mTarget; // the target of the gesture
-    private RefreshView mRefreshView;
+    /**
+     * the target of the gesture
+     */
+    private View mTarget;
+    private BaseRefreshView mBaseRefreshView;
     private int mRefreshViewIndex = -1;
 
     private int mActivePointerId = INVALID_POINTER;
 
     private OnRefreshListener mListener;
-    // Target is returning to its start offset because it was cancelled or a
-    // refresh was triggered.
+    /**
+     * Target is returning to its start offset because it was cancelled or a
+     * refresh was triggered.
+     */
     private boolean mReturningToStart;
-    // If nested scrolling is enabled, the total amount that needed to be
-    // consumed by this as the nested scrolling parent is used in place of the
-    // overscroll determined by MOVE events in the onTouch handler
+    /**
+     * If nested scrolling is enabled, the total amount that needed to be
+     * consumed by this as the nested scrolling parent is used in place of the
+     * overscroll determined by MOVE events in the onTouch handler
+     */
     private float mTotalUnconsumed;
     private boolean mNestedScrollInProgress;
     private boolean mIsBeingDragged;
     private float mInitialDownY;
     private float mInitialMotionY;
-//    private int mTargetAnimationDuration;
 
     private final int[] mParentScrollConsumed = new int[2];
     private final int[] mParentOffsetInWindow = new int[2];
@@ -102,7 +118,7 @@ public class SimpleRefreshLayout
     }
 
     void reset() {
-        mRefreshView.reset();
+        mBaseRefreshView.reset();
     }
 
     @Override
@@ -123,7 +139,7 @@ public class SimpleRefreshLayout
 
     @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
-        return isEnabled() && !mReturningToStart && !mRefreshView.isRefreshing()
+        return isEnabled() && !mReturningToStart && !mBaseRefreshView.isRefreshing()
                 && (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
@@ -198,9 +214,11 @@ public class SimpleRefreshLayout
         }
     }
 
-     public RefreshView build(@HeadStyleModel int model){
+     public BaseRefreshView build(@HeadStyleModel int model){
          switch (model){
-             case CircleMaterialModel:
+             case SIMPLE_PULL_MODEL:
+                 return setRefreshView(new SimplePullModel(getContext()));
+             case CIRCLE_MATERIAL_MODEL:
              default:
                  return setRefreshView(new CircleMaterialModel(getContext()));
          }
@@ -267,20 +285,21 @@ public class SimpleRefreshLayout
     }
 
     private void pullRefresh(float overscrollTop){
-        mRefreshView.pullRefresh(overscrollTop);
+        mBaseRefreshView.pullRefresh(overscrollTop);
     }
 
     private void finishPull(float overscrollTop){
-        if(mRefreshView.finishPull(overscrollTop)&&mListener!=null)
+        if(mBaseRefreshView.finishPull(overscrollTop)&&mListener!=null){
             mListener.onRefresh();
+        }
     }
 
     public void setRefreshing(boolean refreshing){
-        mRefreshView.setRefreshing(refreshing);
+        mBaseRefreshView.setRefreshing(refreshing);
     }
 
     public boolean isRefreshing(){
-        return mRefreshView.isRefreshing();
+        return mBaseRefreshView.isRefreshing();
     }
 
     @Override
@@ -296,14 +315,14 @@ public class SimpleRefreshLayout
         }
 
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
-                || mRefreshView.isRefreshing() || mNestedScrollInProgress) {
+                || mBaseRefreshView.isRefreshing() || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
 
         switch (action) {
             case MotionEvent.ACTION_DOWN:
-                mRefreshView.reset();
+                mBaseRefreshView.reset();
                 mActivePointerId = ev.getPointerId(0);
                 mIsBeingDragged = false;
 
@@ -336,6 +355,8 @@ public class SimpleRefreshLayout
                 mIsBeingDragged = false;
                 mActivePointerId = INVALID_POINTER;
                 break;
+            default:
+                break;
         }
 
         return mIsBeingDragged;
@@ -354,16 +375,17 @@ public class SimpleRefreshLayout
         // if this is a List < L or another view that doesn't support nested
         // scrolling, ignore this request so that the vertical scroll event
         // isn't stolen
-        if ((android.os.Build.VERSION.SDK_INT < 21 && mTarget instanceof AbsListView)
-                || (mTarget != null && !ViewCompat.isNestedScrollingEnabled(mTarget))) {
-            // Nope.
-        } else {
-            super.requestDisallowInterceptTouchEvent(b);
+        if(Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP && mTarget instanceof AbsListView){
+            return;
         }
+        if(mTarget != null && !ViewCompat.isNestedScrollingEnabled(mTarget)){
+            return;
+        }
+        super.requestDisallowInterceptTouchEvent(b);
     }
 
     private void onSecondaryPointerUp(MotionEvent ev) {
-        final int pointerIndex = MotionEventCompat.getActionIndex(ev);
+        final int pointerIndex = ev.getActionIndex();
         final int pointerId = ev.getPointerId(pointerIndex);
         if (pointerId == mActivePointerId) {
             // This was our active pointer going up. Choose a new
@@ -383,7 +405,7 @@ public class SimpleRefreshLayout
         }
 
         if (!isEnabled() || mReturningToStart || canChildScrollUp()
-                || mRefreshView.isRefreshing() || mNestedScrollInProgress) {
+                || mBaseRefreshView.isRefreshing() || mNestedScrollInProgress) {
             // Fail fast if we're not in a state where a swipe is possible
             return false;
         }
@@ -447,6 +469,8 @@ public class SimpleRefreshLayout
             }
             case MotionEvent.ACTION_CANCEL:
                 return false;
+            default:
+                break;
         }
 
         return true;
@@ -470,10 +494,10 @@ public class SimpleRefreshLayout
         if (mTarget == null) {
             return;
         }
-        if(mRefreshView==null){
+        if(mBaseRefreshView ==null){
             ensureRefreshView();
         }
-        if(mRefreshView==null){
+        if(mBaseRefreshView ==null){
             throw new RuntimeException("RefreshView is Null");
         }
         final View child = mTarget;
@@ -482,9 +506,9 @@ public class SimpleRefreshLayout
         final int childWidth = width - getPaddingLeft() - getPaddingRight();
         final int childHeight = height - getPaddingTop() - getPaddingBottom();
         child.layout(childLeft, childTop, childLeft + childWidth, childTop + childHeight);
-        int circleWidth = mRefreshView.getMeasuredWidth();
-        int circleHeight = mRefreshView.getMeasuredHeight();
-        mRefreshView.layout((width / 2 - circleWidth / 2), 0,
+        int circleWidth = mBaseRefreshView.getMeasuredWidth();
+        int circleHeight = mBaseRefreshView.getMeasuredHeight();
+        mBaseRefreshView.layout((width / 2 - circleWidth / 2), 0,
                 (width / 2 + circleWidth / 2), circleHeight);
     }
 
@@ -498,23 +522,23 @@ public class SimpleRefreshLayout
             return;
         }
 
-        if(mRefreshView==null){
+        if(mBaseRefreshView ==null){
             ensureRefreshView();
         }
-        if(mRefreshView==null){
+        if(mBaseRefreshView ==null){
             throw new RuntimeException("RefreshView is Null");
         }
 
         mTarget.measure(
                 MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(),MeasureSpec.EXACTLY),
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY));
-        mRefreshView.measure(
+        mBaseRefreshView.measure(
                 MeasureSpec.makeMeasureSpec(getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.AT_MOST),
                 MeasureSpec.makeMeasureSpec(getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.AT_MOST));
         mRefreshViewIndex = -1;
         // Get the index of the circleview.
         for (int index = 0; index < getChildCount(); index++) {
-            if (getChildAt(index) == mRefreshView) {
+            if (getChildAt(index) == mBaseRefreshView) {
                 mRefreshViewIndex = index;
                 break;
             }
@@ -537,30 +561,30 @@ public class SimpleRefreshLayout
         }
     }
 
-    public <T extends RefreshView> T setRefreshView(T view) {
+    public <T extends BaseRefreshView> T setRefreshView(T view) {
         //如果已经存在刷新头
-        if(mRefreshView!=null){
+        if(mBaseRefreshView !=null){
             //那么去掉历史控件的刷新接口引用
-            mRefreshView.refreshListener = null;
+            mBaseRefreshView.refreshListener = null;
             //去除历史控件的Body控制引用
-            mRefreshView.targetViewScroll = null;
+            mBaseRefreshView.targetViewScroll = null;
             //移除刷新控件
-            removeView(mRefreshView);
+            removeView(mBaseRefreshView);
         }
         //保存新控件引用
-        mRefreshView = view;
+        mBaseRefreshView = view;
         //关联刷新接口引用
-        mRefreshView.refreshListener = mListener;
+        mBaseRefreshView.refreshListener = mListener;
         //关联Body控制引用
-        mRefreshView.targetViewScroll = this;
+        mBaseRefreshView.targetViewScroll = this;
         //添加到Layout中
-        addView(mRefreshView);
+        addView(mBaseRefreshView);
         //返回控件，以方便参数设置
         return view;
     }
 
-    public RefreshView getParams(){
-        return mRefreshView;
+    public BaseRefreshView getParams(){
+        return mBaseRefreshView;
     }
 
     private void ensureTarget() {
@@ -569,7 +593,7 @@ public class SimpleRefreshLayout
         if (mTarget == null) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                if (!child.equals(mRefreshView) && !child.getClass().isAssignableFrom(RefreshView.class)) {
+                if (!child.equals(mBaseRefreshView) && !child.getClass().isAssignableFrom(BaseRefreshView.class)) {
                     mTarget = child;
                     break;
                 }
@@ -580,11 +604,11 @@ public class SimpleRefreshLayout
     private void ensureRefreshView() {
         // Don't bother getting the parent height if the parent hasn't been laid
         // out yet.
-        if (mRefreshView == null) {
+        if (mBaseRefreshView == null) {
             for (int i = 0; i < getChildCount(); i++) {
                 View child = getChildAt(i);
-                if (child instanceof RefreshView && !child.equals(mTarget)) {
-                    setRefreshView((RefreshView) child);
+                if (child instanceof BaseRefreshView && !child.equals(mTarget)) {
+                    setRefreshView((BaseRefreshView) child);
                     break;
                 }
             }
@@ -627,18 +651,7 @@ public class SimpleRefreshLayout
         if (mChildScrollUpCallback != null) {
             return mChildScrollUpCallback.canChildScrollUp(this, mTarget);
         }
-        if (android.os.Build.VERSION.SDK_INT < 14) {
-            if (mTarget instanceof AbsListView) {
-                final AbsListView absListView = (AbsListView) mTarget;
-                return absListView.getChildCount() > 0
-                        && (absListView.getFirstVisiblePosition() > 0 || absListView.getChildAt(0)
-                        .getTop() < absListView.getPaddingTop());
-            } else {
-                return ViewCompat.canScrollVertically(mTarget, -1) || mTarget.getScrollY() > 0;
-            }
-        } else {
-            return ViewCompat.canScrollVertically(mTarget, -1);
-        }
+        return mTarget.canScrollVertically(-1);
     }
 
     /**
@@ -679,7 +692,7 @@ public class SimpleRefreshLayout
      * 下拉刷新的显示View
      * 此View同时也控制下拉刷新的属性以及状态
      */
-    public static abstract class RefreshView extends FrameLayout implements ValueAnimator.AnimatorUpdateListener{
+    public static abstract class BaseRefreshView extends FrameLayout implements ValueAnimator.AnimatorUpdateListener{
 
         protected long targetViewAnimatorDuration = 200;
 
@@ -695,15 +708,15 @@ public class SimpleRefreshLayout
             this.mTotalDragDistance = mTotalDragDistance;
         }
 
-        public RefreshView(Context context) {
+        public BaseRefreshView(Context context) {
             this(context,null);
         }
 
-        public RefreshView(Context context, @Nullable AttributeSet attrs) {
+        public BaseRefreshView(Context context, @Nullable AttributeSet attrs) {
             this(context, attrs,0);
         }
 
-        public RefreshView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+        public BaseRefreshView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
             super(context, attrs, defStyleAttr);
             final DisplayMetrics metrics = getResources().getDisplayMetrics();
             mTotalDragDistance = DEFAULT_PULL_TARGET * metrics.density;
@@ -722,86 +735,27 @@ public class SimpleRefreshLayout
         }
 
         protected void targetScrollTo(float offsetY) {
-            if(targetViewScroll!=null)
+            if(targetViewScroll!=null){
                 targetViewScroll.scrollTo(offsetY);
+            }
         }
 
         protected void targetScrollWith(float offsetY) {
-            if(targetViewScroll!=null)
+            if(targetViewScroll!=null){
                 targetViewScroll.scrollWith(offsetY);
+            }
         }
 
         protected void targetLockedScroll() {
-            if(targetViewScroll==null)
+            if(targetViewScroll!=null){
                 targetViewScroll.lockedScroll();
-//            if(targetViewScroll==null)
-//                return;
-//            float finishOffset = targetViewFinishOffset(0,0,0);
-//            targetViewAnimator.cancel();
-//
-//            targetViewAnimator.setFloatValues(mTargetViewOffset,finishOffset);
-//            targetViewAnimator.setDuration((long) (targetViewAnimatorDuration * (1 - (mTargetViewOffset/finishOffset))));
-//
-//            targetViewAnimator.addListener(new Animator.AnimatorListener() {
-//                @Override
-//                public void onAnimationStart(Animator animation) {
-//
-//                }
-//
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    targetViewScroll.lockedScroll();
-//                    animation.removeListener(this);
-//                }
-//
-//                @Override
-//                public void onAnimationCancel(Animator animation) {
-//                    animation.removeListener(this);
-//                }
-//
-//                @Override
-//                public void onAnimationRepeat(Animator animation) {
-//
-//                }
-//            });
-//
-//            targetViewAnimator.start();
+            }
         }
 
         protected void targetResetScroll() {
-            if(targetViewScroll==null)
+            if(targetViewScroll!=null){
                 targetViewScroll.resetScroll();
-//            if(targetViewScroll==null)
-//                return;
-//            targetViewAnimator.cancel();
-//
-//            targetViewAnimator.setFloatValues(mTargetViewOffset,0);
-//            targetViewAnimator.setDuration(targetViewAnimatorDuration);
-//
-//            targetViewAnimator.addListener(new Animator.AnimatorListener() {
-//                @Override
-//                public void onAnimationStart(Animator animation) {
-//
-//                }
-//
-//                @Override
-//                public void onAnimationEnd(Animator animation) {
-//                    targetViewScroll.resetScroll();
-//                    animation.removeListener(this);
-//                }
-//
-//                @Override
-//                public void onAnimationCancel(Animator animation) {
-//                    animation.removeListener(this);
-//                }
-//
-//                @Override
-//                public void onAnimationRepeat(Animator animation) {
-//
-//                }
-//            });
-//
-//            targetViewAnimator.start();
+            }
         }
 
         /**
@@ -828,8 +782,9 @@ public class SimpleRefreshLayout
             targetScrollTo(mTargetViewOffset);
             //返回是否用于刷新的方法
             mRefreshing = canRefresh(overscrollTop,mTotalDragDistance,originalDragPercent);
-            if(mRefreshing)
-                setRefreshing(mRefreshing);
+            if(mRefreshing){
+                setRefreshing(true);
+            }
             return mRefreshing;
         }
 
@@ -847,7 +802,7 @@ public class SimpleRefreshLayout
 
         /**
          * 返回当前的状态，用于告诉其他部件，确认刷新状态
-         * @return
+         * @return 返回刷新状态
          */
         protected boolean isRefreshing(){
             return mRefreshing;
@@ -877,7 +832,7 @@ public class SimpleRefreshLayout
          * 用于展示自定义的加载动画方法
          */
         protected void setRefreshing(boolean refreshing){
-            if(refreshing && mRefreshing != refreshing){
+            if(refreshing && !mRefreshing){
                 callOnRefresh();
             }
             mRefreshing = refreshing;
@@ -914,8 +869,9 @@ public class SimpleRefreshLayout
          * 主动触发刷新
          */
         protected void callOnRefresh(){
-            if(refreshListener!=null)
+            if(refreshListener!=null){
                 refreshListener.onRefresh();
+            }
         }
 
         /**
@@ -927,10 +883,11 @@ public class SimpleRefreshLayout
 
     public void setMoreListener(OnScrollDownListener.OnScrollListener onScrollListener){
         RecyclerView recyclerView;
-        if(mTarget instanceof RefreshView)
+        if(mTarget instanceof RecyclerView){
             recyclerView = (RecyclerView) mTarget;
-        else
+        }else{
             throw new RuntimeException(getClass().getSimpleName()+" 目前仅支持RecyclerView的上拉加载更多功能");
+        }
         recyclerView.addOnScrollListener(
                 new OnScrollDownListener(
                         (LinearLayoutManager) recyclerView.getLayoutManager(),

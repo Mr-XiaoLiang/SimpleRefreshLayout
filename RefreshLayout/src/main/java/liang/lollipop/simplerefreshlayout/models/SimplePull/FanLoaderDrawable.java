@@ -59,8 +59,9 @@ public class FanLoaderDrawable extends Drawable {
     }
 
     private void init(){
-        if(getBounds().height()<1||getBounds().width()==0)
+        if(getBounds().height()<1||getBounds().width()==0){
             return;
+        }
         radius = Math.min(getBounds().width()/2,getBounds().height()/2);
         paint.setStrokeWidth(petalWidthPercent*radius);
         petalHeight = petalHeightPercent*radius;
@@ -68,8 +69,9 @@ public class FanLoaderDrawable extends Drawable {
     }
 
     private void initColor(){
-        if(getBounds().width()<1||getBounds().height()<1)
+        if(getBounds().width()<1||getBounds().height()<1){
             return;
+        }
         float cx = getBounds().centerX();
         float cy = getBounds().centerY();
         paint.setShader(new SweepGradient(cx,cy,colorArray,null));
@@ -83,15 +85,12 @@ public class FanLoaderDrawable extends Drawable {
         float[] loc = null;
         int cx = getBounds().centerX();
         int cy = getBounds().centerY();
-//        canvas.save();
-//        canvas.rotate(90,getBounds().centerX(),getBounds().centerY());
         for(int i = 0;i<size;i++){
             int angle = (int)((i+0.7f)*step*-1);
             angle += 90;
             loc = getScale(loc,radius*(1-petalWidthPercent*0.5f),petalHeight,angle,cx,cy);
             canvas.drawLine(loc[0],loc[1],loc[2],loc[3],paint);
         }
-//        canvas.restore();
     }
 
     @Override
@@ -110,8 +109,9 @@ public class FanLoaderDrawable extends Drawable {
     }
 
     private float[] getScale(float[] loc,float radius,float length,int angle,int cx,int cy) {
-        if(loc==null || loc.length<4)
+        if(loc==null || loc.length<4){
             loc = new float[4];
+        }
         loc[0] = (float) (Math.sin(2 * Math.PI / 360 * angle) * radius + cx);
         loc[1] = (float) (-Math.cos(2 * Math.PI / 360 * angle) * radius + cy);
         loc[2] = (float) (Math.sin(2 * Math.PI / 360 * angle) * (radius - length) + cx);
