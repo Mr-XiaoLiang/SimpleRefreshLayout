@@ -1,4 +1,4 @@
-package liang.lollipop.simplerefreshlayout.models.CircleMaterial;
+package liang.lollipop.simplerefreshlayout.models.material;
 
 import android.content.Context;
 import android.graphics.Canvas;
@@ -17,6 +17,7 @@ import android.view.animation.Animation;
  * Created by Lollipop on 2017/10/11.
  * 直接从android.support.v4.widget.CircleImageView复制出来的View，
  * 因为外部访问不了，所以复制出来一份。
+ * @author Google
  */
 public class CircleImageView extends android.support.v7.widget.AppCompatImageView {
 

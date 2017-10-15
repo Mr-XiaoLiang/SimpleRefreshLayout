@@ -15,42 +15,73 @@ import android.widget.TextView;
 
 import liang.lollipop.simplerefreshlayout.R;
 import liang.lollipop.simplerefreshlayout.SimpleRefreshLayout;
-import liang.lollipop.simplerefreshlayout.models.SimplePull.FanLoaderDrawable;
+import liang.lollipop.simplerefreshlayout.models.simple.FanLoaderDrawable;
 
 /**
  * Created by Lollipop on 2017/10/12.
  * 简单的下拉模式
+ * @author Lollipop
  */
 public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
-    //旋转动画的动画时间
+    /**
+     * 旋转动画的动画时间
+     */
     private long rotatingAnimationDuration = 1600;
-    //收起动画的动画时间
+    /**
+     * 收起动画的动画时间
+     */
     private long moveToTopAnimationDuration = 300;
-    //展开动画的动画时间
+    /**
+     * 展开动画的动画时间
+     */
     private long moveToTargetAnimationDuration = 300;
-    //旋转的View
+    /**
+     * 旋转的View
+     */
     private View progressView;
-    //旋转View的内容绘制
+    /**
+     * 旋转View的内容绘制
+     */
     private FanLoaderDrawable progressDrawable;
-    //文本提示的View
+    /**
+     * 文本提示的View
+     */
     private TextView hintView;
-    //旋转动画的动画本身
+    /**
+     * 旋转动画的动画本身
+     */
     private Animation rotatingAnimation;
-    //下拉的提示语
+    /**
+     * 下拉的提示语
+     */
     private CharSequence pullDownHint = "下拉进行刷新";
-    //提示松手的描述
+    /**
+     * 提示松手的描述
+     */
     private CharSequence pullReleaseHint = "松手开始刷新";
-    //刷新过程中的描述语
+    /**
+     * 刷新过程中的描述语
+     */
     private CharSequence refreshingHint = "正在刷新";
-    //触发刷新的百分比
+    /**
+     * 触发刷新的百分比
+     */
     private float triggerPercent = 0.8f;
-    //当前的刷新状态
+    /**
+     * 当前的刷新状态
+     */
     private boolean thisRefreshingStatus = mRefreshing;
-    //移动View用的动画
+    /**
+     * 移动View用的动画
+     */
     private ValueAnimator moveAnimation;
-    //Y坐标偏移
+    /**
+     * Y坐标偏移
+     */
     private float offsetY = 0;
-    //进度条的方向
+    /**
+     * 进度条的方向
+     */
     private boolean progressDirection = true;
 
     public SimplePullModel(Context context) {
@@ -68,7 +99,7 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
         //找到进度显示View
         progressView = findViewById(R.id.head_simple_pull_pro);
         //此处做一下简单的版本兼容，并且将进度显示Drawable实例化
-        if(Build.VERSION.SDK_INT>=16){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
             progressView.setBackground(progressDrawable = new FanLoaderDrawable());
         }else{
             progressView.setBackgroundDrawable(progressDrawable = new FanLoaderDrawable());
@@ -110,7 +141,9 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
         //为移动动画设置动画监听器
         moveAnimation.addUpdateListener(this);
     }
-    //旋转进度条
+    /**
+     * 旋转进度条
+     */
     private void rotatingProgress(float pro){
         //此处做一个判断，用于显示进度的缩放，因为如果单纯的旋转，动画会有短暂的停止
         //所以此处通过进度条的缩放，减少动画重复执行时停止的影响
@@ -239,8 +272,9 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
             hintView.setText(pullDownHint);
         }
         //如果超过了触发标准，不再继续增加进度
-        if(pro>1)
+        if(pro>1){
             pro = 1;
+        }
         //设置进度显示
         progressDrawable.setProgress(pro);
         //设置描述文字透明度
@@ -273,8 +307,9 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
      */
     @Override
     protected float targetViewFinishOffset(float pullPixels, float totalDragDistance, float originalDragPercent) {
-        if(pullPixels==0&&totalDragDistance==0&&originalDragPercent==0)
+        if(pullPixels==0&&totalDragDistance==0&&originalDragPercent==0){
             return getHeight();
+        }
         return pullPixels>totalDragDistance?totalDragDistance:pullPixels;
     }
 
@@ -282,11 +317,12 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
     @Override
     protected void setRefreshing(boolean refreshing) {
         super.setRefreshing(refreshing);
-        if(refreshing)
+        if(refreshing){
             hintView.setText(refreshingHint);
-        else
+        }else{
             hintView.setText(pullDownHint);
-        if(refreshing && thisRefreshingStatus != refreshing){
+        }
+        if(refreshing && !thisRefreshingStatus){
             startMoveToTarget();
             progressView.setRotation(1);
             progressView.startAnimation(rotatingAnimation);

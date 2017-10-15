@@ -64,8 +64,16 @@ public class OnScrollDownListener extends RecyclerView.OnScrollListener{
     }
 
     public interface OnScrollListener{
+        /**
+         * 列表状态变化的回调方法
+         * @param down 是否正在向下滚动
+         * @param newState 新的状态的什么
+         */
         public void onScroll(boolean down, int newState);
 
+        /**
+         * 需要加载更多时的回调方法
+         */
         public void onMore();
     }
 

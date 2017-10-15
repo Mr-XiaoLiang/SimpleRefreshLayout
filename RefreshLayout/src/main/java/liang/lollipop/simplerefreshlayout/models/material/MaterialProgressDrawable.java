@@ -1,4 +1,4 @@
-package liang.lollipop.simplerefreshlayout.models.CircleMaterial;
+package liang.lollipop.simplerefreshlayout.models.material;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -30,6 +30,7 @@ import java.util.ArrayList;
  * Created by Lollipop on 2017/10/11.
  * 这是从android.support.v4.widget.MaterialProgressDrawable
  * 复制出来的，因为访问权限问题，无法直接使用，所以复制出来一份
+ * @author Google
  */
 public class MaterialProgressDrawable  extends Drawable implements Animatable {
     private static final Interpolator LINEAR_INTERPOLATOR = new LinearInterpolator();
@@ -41,14 +42,17 @@ public class MaterialProgressDrawable  extends Drawable implements Animatable {
     @IntDef({LARGE, DEFAULT})
     public @interface ProgressDrawableSize {}
 
-    // Maps to ProgressBar.Large style
+    /**
+     * Maps to ProgressBar.Large style
+     */
     public static final int LARGE = 0;
     // Maps to ProgressBar default style
     public static final int DEFAULT = 1;
 
     // Maps to ProgressBar default style
     private static final int CIRCLE_DIAMETER = 40;
-    private static final float CENTER_RADIUS = 8.75f; //should add up to 10 when + stroke_width
+    //should add up to 10 when + stroke_width
+    private static final float CENTER_RADIUS = 8.75f;
     private static final float STROKE_WIDTH = 2.5f;
 
     // Maps to ProgressBar.Large style
@@ -249,8 +253,8 @@ public class MaterialProgressDrawable  extends Drawable implements Animatable {
     @Override
     public boolean isRunning() {
         final ArrayList<Animation> animators = mAnimators;
-        final int N = animators.size();
-        for (int i = 0; i < N; i++) {
+        final int n = animators.size();
+        for (int i = 0; i < n; i++) {
             final Animation animator = animators.get(i);
             if (animator.hasStarted() && !animator.hasEnded()) {
                 return true;

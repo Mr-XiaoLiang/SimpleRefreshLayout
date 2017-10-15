@@ -16,12 +16,13 @@ import android.view.animation.DecelerateInterpolator;
 import android.view.animation.Transformation;
 
 import liang.lollipop.simplerefreshlayout.SimpleRefreshLayout;
-import liang.lollipop.simplerefreshlayout.models.CircleMaterial.CircleImageView;
-import liang.lollipop.simplerefreshlayout.models.CircleMaterial.MaterialProgressDrawable;
+import liang.lollipop.simplerefreshlayout.models.material.CircleImageView;
+import liang.lollipop.simplerefreshlayout.models.material.MaterialProgressDrawable;
 
 /**
  * Created by Lollipop on 2017/10/11.
  * 默认的SwipeRefreshLayout的样式，圆球式的刷新显示
+ * @author Google
  */
 public class CircleMaterialModel extends SimpleRefreshLayout.BaseRefreshView {
 

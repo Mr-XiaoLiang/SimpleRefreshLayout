@@ -9,11 +9,14 @@ import liang.lollipop.simplerefreshlayout.SimpleRefreshLayout;
 import liang.lollipop.simplerefreshlayout.models.CircleMaterialModel;
 import liang.lollipop.simplerefreshlayout.models.SimplePullModel;
 
+/**
+ * @author Lollipop
+ */
 public class MainActivity extends AppCompatActivity implements SimpleRefreshLayout.OnRefreshListener {
 
     public static final String ARG_STYLE = "ARG_STYLE";
-    public static final int STYLE_CircleMaterial = 0;
-    public static final int STYLE_SimplePull = 1;
+    public static final int STYLE_CIRCLE_MATERIAL = 0;
+    public static final int STYLE_SIMPLE_PULL = 1;
 
     private SimpleRefreshLayout simpleRefreshLayout;
 
@@ -23,14 +26,9 @@ public class MainActivity extends AppCompatActivity implements SimpleRefreshLayo
         setContentView(R.layout.activity_main);
         simpleRefreshLayout = (SimpleRefreshLayout) findViewById(R.id.simpleRefreshLayout);
         simpleRefreshLayout.setOnRefreshListener(this);
-        int style = getIntent().getIntExtra(ARG_STYLE,STYLE_CircleMaterial);
+        int style = getIntent().getIntExtra(ARG_STYLE, STYLE_CIRCLE_MATERIAL);
         switch (style){
-            case STYLE_CircleMaterial:
-                simpleRefreshLayout
-                        .setRefreshView(new CircleMaterialModel(this))
-                        .setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
-                break;
-            case STYLE_SimplePull:
+            case STYLE_SIMPLE_PULL:
                 simpleRefreshLayout
                         .setRefreshView(new SimplePullModel(this))
                         .setPullDownHint("下拉进行刷新")
@@ -38,6 +36,12 @@ public class MainActivity extends AppCompatActivity implements SimpleRefreshLayo
                         .setRefreshingHint("正在进行刷新")
                         .setHintColor(Color.GRAY)
                         .setProgressColors(Color.GRAY,Color.TRANSPARENT);
+                break;
+            default:
+            case STYLE_CIRCLE_MATERIAL:
+                simpleRefreshLayout
+                        .setRefreshView(new CircleMaterialModel(this))
+                        .setColorSchemeResources(R.color.colorAccent,R.color.colorPrimary);
                 break;
         }
     }

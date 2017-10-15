@@ -5,6 +5,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+/**
+ * @author Lollipop
+ */
 public class StartActivity extends AppCompatActivity implements View.OnClickListener {
 
     @Override
@@ -18,11 +21,13 @@ public class StartActivity extends AppCompatActivity implements View.OnClickList
         Intent intent = new Intent(this,MainActivity.class);
         switch (view.getId()){
             case R.id.system_style:
-                intent.putExtra(MainActivity.ARG_STYLE,MainActivity.STYLE_CircleMaterial);
+                intent.putExtra(MainActivity.ARG_STYLE,MainActivity.STYLE_CIRCLE_MATERIAL);
                 break;
             case R.id.simple_style:
-                intent.putExtra(MainActivity.ARG_STYLE,MainActivity.STYLE_SimplePull);
+                intent.putExtra(MainActivity.ARG_STYLE,MainActivity.STYLE_SIMPLE_PULL);
                 break;
+            default:
+                return;
         }
         startActivity(intent);
     }

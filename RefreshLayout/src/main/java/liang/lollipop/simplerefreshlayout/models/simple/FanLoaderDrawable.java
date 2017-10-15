@@ -1,4 +1,4 @@
-package liang.lollipop.simplerefreshlayout.models.SimplePull;
+package liang.lollipop.simplerefreshlayout.models.simple;
 
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
