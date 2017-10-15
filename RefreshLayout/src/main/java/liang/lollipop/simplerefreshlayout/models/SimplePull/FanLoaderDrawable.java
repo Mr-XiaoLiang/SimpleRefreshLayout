@@ -15,25 +15,42 @@ import android.support.annotation.Nullable;
 /**
  * Created by Lollipop on 2017/10/12.
  * 扇形的菊花加载图
+ * @author Lollipop
  */
 public class FanLoaderDrawable extends Drawable {
 
-    //花瓣数量
+    /**
+     * 花瓣数量
+     */
     private int petalSize = 9;
 
-    //花瓣的长度百分比
+    /**
+     * 花瓣的长度百分比
+     */
     private float petalHeightPercent = 0.35f;
-    //花瓣的宽度百分比
+    /**
+     * 花瓣的宽度百分比
+     */
     private float petalWidthPercent = 0.25f;
-    //花瓣是否使用圆角
+    /**
+     * 花瓣是否使用圆角
+     */
     private Paint.Cap petalCap = Paint.Cap.ROUND;
-    //画笔
+    /**
+     * 画笔
+     */
     private Paint paint;
-    //颜色数组
+    /**
+     * 颜色数组
+     */
     private int[] colorArray;
-    //半径
+    /**
+     * 半径
+     */
     private int radius = 0;
-    //花瓣长度
+    /**
+     * 花瓣长度
+     */
     private float petalHeight = 0;
 
     @FloatRange(from = 0,to = 1)
