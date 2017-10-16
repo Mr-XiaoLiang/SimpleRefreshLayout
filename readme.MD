@@ -5,6 +5,8 @@
 >  * Layout结构非常简单，主体仅仅只有1个类，不到1000行（包括注释）。
 >  * 使用及自定义非常简单，只需要实现相应的方法，即可做到绝大多数效果。
 
+相关解说，欢迎移步[简书](http://www.jianshu.com/p/65506b0f993a)
+
 效果预览：
 ![系统默认样式](https://gitee.com/xxxxl/SimpleRefreshLayout/blob/develop/gif/CircelMaterialModel-Demo.gif)
 ![简易下拉样式](https://gitee.com/xxxxl/SimpleRefreshLayout/blob/develop/gif/SimplePullModel-Demo.gif)
