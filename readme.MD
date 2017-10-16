@@ -34,7 +34,7 @@
 >     .setHintColor(Color.GRAY)//设置刷新提示的文字颜色
 >     .setProgressColors(Color.GRAY,Color.TRANSPARENT);//设置刷新进度条的颜色（数组）
 > ```
-> 注意，除了_setRefreshView(BaseRefreshView view)_ 方法，其他方法均由刷新头提供，因此，更换刷新头，将会有不同的参数设置项以及刷新效果。
+> 注意，除了 _setRefreshView(BaseRefreshView view)_ 方法，其他方法均由刷新头提供，因此，更换刷新头，将会有不同的参数设置项以及刷新效果。
 
 代码介绍：
 > _setRefreshView(BaseRefreshView view)_ 这是SimpleRefreshLayout对外最主要的方法，此方法用于初始化SimpleRefreshLayout，同时做到了更换刷新样式而不需要修改布局文件以及其他代码的目的。__此方法请在界面测量前调用并完成初始化。__建议封装为公用的方法，当业务需求变化时，可以一处修改，所有界面的刷新样式全部改变。
