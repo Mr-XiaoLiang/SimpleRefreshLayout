@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
-
+apply plugin: 'com.novoda.bintray-release'
 android {
-    compileSdkVersion 25
+    compileSdkVersion 26
     buildToolsVersion '26.0.2'
     defaultConfig {
         minSdkVersion 14
@@ -16,6 +16,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    /* 忽略错误信息 */
+    lintOptions {
+        abortOnError false
+    }
 }
 
 dependencies {
@@ -23,8 +27,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:26.+'
+    compile 'com.android.support:appcompat-v7:26+'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:26.0.0-alpha1'
+    compile 'com.android.support:recyclerview-v7:26+'
 }
+
+publish {
+    userOrg = 'lollipop'      //bintray注册的用户名
+    groupId = 'liang.lollipop.simplerefreshlayout'         //compile引用时的第1部分groupId
+    artifactId = 'SimpleRefreshLayout'     //compile引用时的第2部分项目名
+    publishVersion = '1.0.0'    //compile引用时的第3部分版本号
+    desc = 'A simple you can customize the refresh layout' //描述
+    website = 'https://github.com/Mr-XiaoLiang/SimpleRefreshLayout'
+}
+
