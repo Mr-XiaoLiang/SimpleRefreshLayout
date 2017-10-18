@@ -4,7 +4,7 @@
     android:layout_height="wrap_content"
     android:gravity="center"
     android:minHeight="80dp">
-    <View android:layout_width="24dp"
+    <ImageView android:layout_width="24dp"
         android:layout_height="24dp"
         android:id="@+id/head_simple_pull_pro"/>
     <Space

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import liang.lollipop.simplerefreshlayout.R;
@@ -38,7 +39,7 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
     /**
      * 旋转的View
      */
-    private View progressView;
+    private ImageView progressView;
     /**
      * 旋转View的内容绘制
      */
@@ -99,11 +100,7 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
         //找到进度显示View
         progressView = findViewById(R.id.head_simple_pull_pro);
         //此处做一下简单的版本兼容，并且将进度显示Drawable实例化
-        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.JELLY_BEAN){
-            progressView.setBackground(progressDrawable = new FanLoaderDrawable());
-        }else{
-            progressView.setBackgroundDrawable(progressDrawable = new FanLoaderDrawable());
-        }
+        progressView.setImageDrawable(progressDrawable = new FanLoaderDrawable());
         //找到文本提示view
         hintView = (TextView) findViewById(R.id.head_simple_pull_text);
         //初始化旋转动画

@@ -22,6 +22,9 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 import liang.lollipop.simplerefreshlayout.models.CircleMaterialModel;
 import liang.lollipop.simplerefreshlayout.models.SimplePullModel;
 
@@ -36,6 +39,7 @@ public class SimpleRefreshLayout
         NestedScrollingChild,
         ScrollCallBack{
 
+    @Retention(RetentionPolicy.SOURCE)
     @IntDef({CIRCLE_MATERIAL_MODEL,SIMPLE_PULL_MODEL})
     public @interface HeadStyleModel {}
 
