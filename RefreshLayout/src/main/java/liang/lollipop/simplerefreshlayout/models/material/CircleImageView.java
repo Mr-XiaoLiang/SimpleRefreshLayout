@@ -13,6 +13,7 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 
 /**
  * Created by Lollipop on 2017/10/11.
@@ -20,7 +21,7 @@ import android.view.animation.Animation;
  * 因为外部访问不了，所以复制出来一份。
  * @author Google
  */
-public class CircleImageView extends android.support.v7.widget.AppCompatImageView {
+public class CircleImageView extends ImageView {
 
     private static final int KEY_SHADOW_COLOR = 0x1E000000;
     private static final int FILL_SHADOW_COLOR = 0x3D000000;
