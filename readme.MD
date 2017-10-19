@@ -18,6 +18,11 @@
 > 4. Head覆盖于内容体上层，允许覆盖整个SimpleRefreshLayout，因此可以做到很多的刷新效果，比如省略部分UI设计中的刷新提示Dialog。
 > 5. 本项目并未做上拉加载更多实现，但是提供相应的解决方案，并且加入兼容。
 
+
+引入Android Studio方法:
+> compile 'liang.lollipop.simplerefreshlayout:SimpleRefreshLayout:1.0.2'
+
+
 使用方法：
 > ``` Java
 > simpleRefreshLayout

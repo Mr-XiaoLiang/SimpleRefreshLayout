@@ -98,7 +98,7 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
         //引入布局
         LayoutInflater.from(context).inflate(R.layout.head_simple_pull,this,true);
         //找到进度显示View
-        progressView = findViewById(R.id.head_simple_pull_pro);
+        progressView = (ImageView) findViewById(R.id.head_simple_pull_pro);
         //此处做一下简单的版本兼容，并且将进度显示Drawable实例化
         progressView.setImageDrawable(progressDrawable = new FanLoaderDrawable());
         //找到文本提示view
