@@ -137,6 +137,13 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
         moveAnimation = new ValueAnimator();
         //为移动动画设置动画监听器
         moveAnimation.addUpdateListener(this);
+        //重置
+        post(new Runnable() {
+            @Override
+            public void run() {
+                reset();
+            }
+        });
     }
     /**
      * 旋转进度条
@@ -168,8 +175,10 @@ public class SimplePullModel extends SimpleRefreshLayout.BaseRefreshView {
     protected void reset() {
         super.reset();
         clearAnimation();
+        moveAnimation.cancel();
         progressView.clearAnimation();
         progressView.setRotation(0);
+        hintView.setAlpha(0);
         moveView(0);
     }
 

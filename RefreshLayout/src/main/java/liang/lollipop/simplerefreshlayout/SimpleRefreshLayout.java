@@ -886,6 +886,10 @@ public class SimpleRefreshLayout
     }
 
     public void setMoreListener(OnScrollDownListener.OnScrollListener onScrollListener){
+        ensureTarget();
+        if(mTarget==null){
+            throw new RuntimeException(getClass().getSimpleName()+" 找不到可用的内容体");
+        }
         RecyclerView recyclerView;
         if(mTarget instanceof RecyclerView){
             recyclerView = (RecyclerView) mTarget;

@@ -7,8 +7,8 @@ android {
     defaultConfig {
         minSdkVersion 14
         targetSdkVersion 25
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.3"
     }
     buildTypes {
         release {
@@ -43,7 +43,7 @@ publish {
     userOrg = 'lollipop'      //bintray注册的用户名
     groupId = 'liang.lollipop.simplerefreshlayout'         //compile引用时的第1部分groupId
     artifactId = 'SimpleRefreshLayout'     //compile引用时的第2部分项目名
-    publishVersion = '1.0.2'    //compile引用时的第3部分版本号
+    publishVersion = '1.0.3'    //compile引用时的第3部分版本号
     desc = 'A simple you can customize the refresh layout' //描述
     website = 'https://github.com/Mr-XiaoLiang/SimpleRefreshLayout'
 }
