@@ -8,8 +8,8 @@
 相关解说，欢迎移步[简书](http://www.jianshu.com/p/65506b0f993a)
 
 效果预览：
-![系统默认样式](https://gitee.com/xxxxl/SimpleRefreshLayout/blob/develop/gif/CircelMaterialModel-Demo.gif)
-![简易下拉样式](https://gitee.com/xxxxl/SimpleRefreshLayout/blob/develop/gif/SimplePullModel-Demo.gif)
+![系统默认样式](https://github.com/Mr-XiaoLiang/SimpleRefreshLayout/blob/develop/gif/CircelMaterialModel-Demo.gif)
+![简易下拉样式](https://github.com/Mr-XiaoLiang/SimpleRefreshLayout/blob/develop/gif/SimplePullModel-Demo.gif)
 
 结构说明：
 > 1. 本项目基于SwipeRefreshLayout改写，将SwipeRefreshLayout的代码抽象为滑动处理部分（主体）和刷新头部分（Head）。
