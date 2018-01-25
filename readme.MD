@@ -20,7 +20,7 @@
 
 
 引入Android Studio方法:
-> compile 'liang.lollipop.simplerefreshlayout:SimpleRefreshLayout:1.0.3'
+> compile 'liang.lollipop.simplerefreshlayout:SimpleRefreshLayout:1.0.4'
 
 
 使用方法：
