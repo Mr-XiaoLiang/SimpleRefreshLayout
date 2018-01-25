@@ -119,6 +119,10 @@ public class SimpleRefreshLayout
         mNestedScrollingParentHelper = new NestedScrollingParentHelper(this);
         mNestedScrollingChildHelper = new NestedScrollingChildHelper(this);
         setNestedScrollingEnabled(true);
+
+        if(isInEditMode()){
+            setRefreshView(new CircleMaterialModel(getContext()));
+        }
     }
 
     void reset() {
@@ -526,10 +530,11 @@ public class SimpleRefreshLayout
             return;
         }
 
-        if(mRefreshView ==null){
+        if(mRefreshView == null){
             ensureRefreshView();
         }
-        if(mRefreshView ==null){
+
+        if(mRefreshView == null){
             throw new RuntimeException("RefreshView is Null");
         }
 
@@ -567,7 +572,7 @@ public class SimpleRefreshLayout
 
     public <T extends BaseRefreshView> T setRefreshView(T view) {
         //如果已经存在刷新头
-        if(mRefreshView !=null){
+        if(mRefreshView != null){
             //那么去掉历史控件的刷新接口引用
             mRefreshView.refreshListener = null;
             //去除历史控件的Body控制引用
